@@ -1,0 +1,70 @@
+
+services:
+  db-docuhub-morning:
+    image: postgres:17.5-bullseye
+    container_name: db-docuhub-morning
+    environment:
+      POSTGRES_DB: db_keycloak
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: qwer
+    ports:
+      - "5400:5432"
+    volumes:
+      - postgres_morning_vol:/var/lib/postgresql/data
+    networks:
+      - docuhub_morning_net
+
+  kc-docuhub-morning:
+    image: quay.io/keycloak/keycloak:26.3.1
+    container_name: kc-docuhub-morning
+    depends_on:
+      - db-docuhub-morning
+    environment:
+      # Database Configuration
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db-docuhub-morning:5432/db_keycloak
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: qwer
+      
+      # Admin User
+      KC_BOOTSTRAP_ADMIN_USERNAME: kcadmin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: qwer
+      
+      # Hostname
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 9090
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+    ports:
+      - "9090:8080"
+      - "8443:8443"
+    volumes:
+      - ./keycloak/themes:/opt/keycloak/providers/
+      - ./keycloak/conf:/opt/keycloak/conf
+      - ./keycloak/data:/opt/keycloak/data
+    networks:
+      - docuhub_morning_net
+    command:
+      - start-dev
+
+  minio-docuhub-morning:
+    image: quay.io/minio/minio
+    container_name: minio-docuhub-morning
+    environment:
+      MINIO_ROOT_USER: minadmin
+      MINIO_ROOT_PASSWORD: qwer1234
+    ports:
+      - "9000:9000" # S3 API
+      - "9001:9001" # Console UI
+    volumes:
+      - minio_morning_vol:/data
+    networks:
+      - docuhub_morning_net
+    command: server /data --console-address ":9001"
+
+volumes:
+  postgres_morning_vol:
+  minio_morning_vol:
+
+networks:
+  docuhub_morning_net:
