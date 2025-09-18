@@ -35,7 +35,7 @@ jobs:
               git reset --hard origin/master
             else
               echo "📂 Cloning repo..."
-              git clone https://${{ secrets.PAT_TOKEN }}@github.com/FSWD-GEN-01/ipub-engine-backend.git $HOME/docuhub-infra
+              git clone https://${{ secrets.PAT_TOKEN }}@github.com/seang454/full-stack-final-keycloak.git $HOME/docuhub-infra
               cd $HOME/docuhub-infra
             fi
 
