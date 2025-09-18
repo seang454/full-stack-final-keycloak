@@ -31,7 +31,7 @@ jobs:
               echo "📂 Repo exists, updating..."
               cd $HOME/docuhub-infra
               git fetch origin
-              git reset --hard origin/main
+              git reset --hard origin/master
             else
               echo "📂 Cloning repo..."
               git clone https://${{ secrets.PAT_TOKEN }}@github.com/FSWD-GEN-01/ipub-engine-backend.git $HOME/docuhub-infra
