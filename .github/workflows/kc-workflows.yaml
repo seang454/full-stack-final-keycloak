@@ -1,0 +1,54 @@
+name: Deploy Infra to VM
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout workflow repo
+        uses: actions/checkout@v3
+
+      - name: SSH into VM and deploy infra
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.GCE_VM_IP }}
+          username: ${{ secrets.GCE_VM_USER }}
+          key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            set -o pipefail
+            echo "🚀 Starting infra deployment (Postgres + Keycloak + MinIO)..."
+
+            # Ensure project directory exists
+            mkdir -p $HOME/docuhub-infra
+
+            # Clone or update repo
+            if [ -d "$HOME/docuhub-infra/.git" ]; then
+              echo "📂 Repo exists, updating..."
+              cd $HOME/docuhub-infra
+              git fetch origin
+              git reset --hard origin/main
+            else
+              echo "📂 Cloning repo..."
+              git clone https://${{ secrets.PAT_TOKEN }}@github.com/FSWD-GEN-01/ipub-engine-backend.git $HOME/docuhub-infra
+              cd $HOME/docuhub-infra
+            fi
+
+            # Go to directory containing docker-compose.yml
+            cd $HOME/docuhub-infra
+
+            # Deploy infra with docker compose
+            echo "🐳 Deploying services..."
+            docker compose down --remove-orphans || true
+            docker compose pull
+            docker compose up -d
+
+            # Cleanup unused images
+            docker system prune -af || true
+
+            echo "✅ Infra deployment finished successfully!"
+            docker ps
