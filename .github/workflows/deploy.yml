@@ -35,12 +35,20 @@ jobs:
               git reset --hard origin/master
             else
               echo "📂 Cloning repo..."
-              git clone https://${{ secrets.PAT_TOKEN }}@github.com/seang454/full-stack-final-keycloak.git $HOME/docuhub-infra
+              git clone https://${{ secrets.PAT_TOKEN }}@github.com/FSWD-GEN-01/ipub-engine-backend.git $HOME/docuhub-infra
               cd $HOME/docuhub-infra
             fi
 
-            # Go to the folder containing docker-compose.yml
-            cd $HOME/docuhub-infra/.git/workflows
+            # Find the docker-compose file
+            DOCKER_COMPOSE_FILE=$(find $HOME/docuhub-infra -name "docker-compose.yml" | head -n 1)
+            if [ -z "$DOCKER_COMPOSE_FILE" ]; then
+              echo "❌ docker-compose.yml not found!"
+              exit 1
+            fi
+
+            # Go to folder containing docker-compose.yml
+            COMPOSE_DIR=$(dirname "$DOCKER_COMPOSE_FILE")
+            cd "$COMPOSE_DIR"
             echo "📂 Current folder: $(pwd)"
             ls -l
 
