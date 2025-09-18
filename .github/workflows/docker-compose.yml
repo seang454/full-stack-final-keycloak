@@ -52,7 +52,7 @@ jobs:
             echo "📂 Current folder: $(pwd)"
             ls -l
 
-            # Deploy infra with Docker Compose full image
+            # Deploy infra with Docker Compose
             echo "🐳 Deploying services..."
             docker compose down --remove-orphans || true
             docker compose pull
