@@ -21,9 +21,10 @@ jobs:
           script: |
             set -e
             set -o pipefail
+
             echo "🚀 Starting infra deployment (Postgres + Keycloak + MinIO)..."
 
-            # Ensure project directory exists and create
+            # Ensure project directory exists
             mkdir -p $HOME/docuhub-infra
 
             # Clone or update repo
@@ -38,10 +39,20 @@ jobs:
               cd $HOME/docuhub-infra
             fi
 
-            # Go to directory containing docker-compose.yml
-            cd $HOME/docuhub-infra
+            # Find the docker-compose file
+            DOCKER_COMPOSE_FILE=$(find $HOME/docuhub-infra -name "docker-compose.yml" | head -n 1)
+            if [ -z "$DOCKER_COMPOSE_FILE" ]; then
+              echo "❌ docker-compose.yml not found!"
+              exit 1
+            fi
 
-            # Deploy infra with docker compose
+            # Go to folder containing docker-compose.yml
+            COMPOSE_DIR=$(dirname "$DOCKER_COMPOSE_FILE")
+            cd "$COMPOSE_DIR"
+            echo "📂 Current folder: $(pwd)"
+            ls -l
+
+            # Deploy infra with Docker Compose
             echo "🐳 Deploying services..."
             docker compose down --remove-orphans || true
             docker compose pull
