@@ -23,7 +23,7 @@ jobs:
             set -o pipefail
             echo "🚀 Starting infra deployment (Postgres + Keycloak + MinIO)..."
 
-            # Ensure project directory exists
+            # Ensure project directory exists and create
             mkdir -p $HOME/docuhub-infra
 
             # Clone or update repo
