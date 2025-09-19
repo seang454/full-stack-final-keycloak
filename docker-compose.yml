@@ -13,7 +13,6 @@ services:
       - postgres_morning_vol:/var/lib/postgresql/data
     networks:
       - docuhub_morning_net
-
   kc-docuhub-morning:
     image: quay.io/keycloak/keycloak:26.3.1
     container_name: kc-docuhub-morning
@@ -32,10 +31,10 @@ services:
       
       # Hostname
       KC_HOSTNAME: keycloak.docuhub.me
-      KC_HTTP_ENABLED: "false"
+      KC_HTTP_ENABLED: "true"
       KC_HOSTNAME_PORT: 9090
       KC_HOSTNAME_STRICT: "false"
-      KC_HOSTNAME_STRICT_HTTPS: "true"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
     ports:
       - "9090:8080"
     volumes:
