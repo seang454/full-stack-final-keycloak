@@ -35,9 +35,10 @@ services:
       # Hostname & HTTPS
       KC_HOSTNAME: https://keycloak.docuhub.me
       KC_PROXY: edge
-      KC_PROXY_HEADERS: "true"
+      KC_PROXY_HEADERS: "true" # read the forwarded headers from your reverse proxy
       KC_HTTP_ENABLED: "true"  # only HTTPS
     ports:
+      - "9090:8080"
       - "8443:8443"  # Keycloak HTTPS port
     volumes:
       - ./keycloak/themes:/opt/keycloak/providers/
