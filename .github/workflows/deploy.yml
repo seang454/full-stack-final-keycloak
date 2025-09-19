@@ -45,7 +45,7 @@ jobs:
             sudo chown -R 1000:1000 ./keycloak/data
             chmod -R 777 ./keycloak/data
 
-            # Find the docker-compose file
+            # Find the docker-compose
             DOCKER_COMPOSE_FILE=$(find $HOME/docuhub-infra -name "docker-compose.yml" | head -n 1)
             if [ -z "$DOCKER_COMPOSE_FILE" ]; then
               echo "❌ docker-compose.yml not found!"
