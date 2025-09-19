@@ -31,7 +31,7 @@ services:
       KC_BOOTSTRAP_ADMIN_PASSWORD: qwer
       
       # Hostname
-      KC_HOSTNAME: localhost
+      KC_HOSTNAME: https://keycloak.docuhub.me
       KC_HOSTNAME_PORT: 9090
       KC_HOSTNAME_STRICT: false
       KC_HOSTNAME_STRICT_HTTPS: false
