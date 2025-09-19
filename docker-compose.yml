@@ -63,7 +63,7 @@ services:
     networks:
       - docuhub_morning_net
     command: server /data --console-address ":9001"
-
+# build 
 volumes:
   postgres_morning_vol:
   minio_morning_vol:
