@@ -31,13 +31,13 @@ services:
       KC_BOOTSTRAP_ADMIN_PASSWORD: qwer
       
       # Hostname
-      KC_HOSTNAME: https://keycloak.docuhub.me
+      KC_HOSTNAME: keycloak.docuhub.me
+      KC_HTTP_ENABLED: "false"
       KC_HOSTNAME_PORT: 9090
-      KC_HOSTNAME_STRICT: false
-      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_HTTPS: "true"
     ports:
       - "9090:8080"
-      - "8443:8443"
     volumes:
       - ./keycloak/themes:/opt/keycloak/providers/
       - ./keycloak/conf:/opt/keycloak/conf
@@ -45,7 +45,7 @@ services:
     networks:
       - docuhub_morning_net
     command:
-      - start-dev
+      - start
 
   minio-docuhub-morning:
     image: quay.io/minio/minio
