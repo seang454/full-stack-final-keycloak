@@ -40,9 +40,11 @@ services:
     ports:
       - "9090:8080"  # host port 9090 → container port 8080
     volumes:
-      - ./keycloak/themes:/opt/keycloak/providers/
       - ./keycloak/conf:/opt/keycloak/conf
       - ./keycloak/data:/opt/keycloak/data
+      - ./keycloak/data/tmp:/opt/keycloak/data/tmp
+      - ./keycloak/providers:/opt/keycloak/providers
+      - ./keycloak/themes:/opt/keycloak/themes
     networks:
       - docuhub_morning_net
     command: start
