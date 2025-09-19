@@ -41,6 +41,7 @@ services:
       - ./keycloak/themes:/opt/keycloak/providers/
       - ./keycloak/conf:/opt/keycloak/conf
       - ./keycloak/data:/opt/keycloak/data
+      - /opt/keycloak/data/tmp:/opt/keycloak/data/tmp
     networks:
       - docuhub_morning_net
     command:
