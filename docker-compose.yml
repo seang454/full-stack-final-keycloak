@@ -32,14 +32,13 @@ services:
       KC_BOOTSTRAP_ADMIN_USERNAME: kcadmin
       KC_BOOTSTRAP_ADMIN_PASSWORD: qwer
 
-      # Hostname & HTTPS
-      KC_HOSTNAME: https://keycloak.docuhub.me
+      # Hostname & Proxy (HTTP only, proxy handles HTTPS)
+      KC_HOSTNAME: http://keycloak.docuhub.me
       KC_PROXY: edge
-      KC_PROXY_HEADERS: "true" # read the forwarded headers from your reverse proxy
-      KC_HTTP_ENABLED: "true"  # only HTTPS
+      KC_PROXY_HEADERS: "true"  # read X-Forwarded-* headers from reverse proxy
+      KC_HTTP_ENABLED: "true"   # Keycloak runs in HTTP mode
     ports:
-      - "9090:8080"
-      - "8443:8443"  # Keycloak HTTPS port
+      - "9090:8080"  # host port 9090 → container port 8080
     volumes:
       - ./keycloak/themes:/opt/keycloak/providers/
       - ./keycloak/conf:/opt/keycloak/conf
