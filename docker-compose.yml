@@ -35,7 +35,7 @@ services:
       # Hostname & Proxy (HTTP only, proxy handles HTTPS)
       KC_HOSTNAME: http://keycloak.docuhub.me
       KC_PROXY: edge
-      KC_PROXY_HEADERS: "true"  # read X-Forwarded-* headers from reverse proxy
+      KC_PROXY_HEADERS: "xforwarded"  # read X-Forwarded-* headers from reverse proxy
       KC_HTTP_ENABLED: "true"   # Keycloak runs in HTTP mode
     ports:
       - "9090:8080"  # host port 9090 → container port 8080
@@ -43,7 +43,6 @@ services:
       - ./keycloak/themes:/opt/keycloak/providers/
       - ./keycloak/conf:/opt/keycloak/conf
       - ./keycloak/data:/opt/keycloak/data
-      - ./keycloak/data/tmp:/opt/keycloak/data/tmp
     networks:
       - docuhub_morning_net
     command: start
