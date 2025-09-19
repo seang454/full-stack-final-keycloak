@@ -35,8 +35,8 @@ services:
       KC_HTTP_ENABLED: "true"
       KC_HOSTNAME_PORT: 9090
       KC_PROXY: edge
-      # KC_HOSTNAME_STRICT: "false" for dev or testing
-      # KC_HOSTNAME_STRICT_HTTPS: "false" for dev or testing
+      KC_HOSTNAME_STRICT: "false" 
+      KC_HOSTNAME_STRICT_HTTPS: "false" 
     ports:
       - "9090:8080"
     volumes:
