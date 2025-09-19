@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   db-docuhub-morning:
     image: postgres:17.5-bullseye
@@ -12,38 +14,39 @@ services:
       - postgres_morning_vol:/var/lib/postgresql/data
     networks:
       - docuhub_morning_net
+
   kc-docuhub-morning:
-  image: quay.io/keycloak/keycloak:26.3.1
-  container_name: kc-docuhub-morning
-  depends_on:
-    - db-docuhub-morning
-  environment:
-    # Database Configuration
-    KC_DB: postgres
-    KC_DB_URL: jdbc:postgresql://db-docuhub-morning:5432/db_keycloak
-    KC_DB_USERNAME: postgres
-    KC_DB_PASSWORD: qwer
+    image: quay.io/keycloak/keycloak:26.3.1
+    container_name: kc-docuhub-morning
+    depends_on:
+      db-docuhub-morning:
+        condition: service_started
+    environment:
+      # Database Configuration
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db-docuhub-morning:5432/db_keycloak
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: qwer
 
-    # Admin User
-    KC_BOOTSTRAP_ADMIN_USERNAME: kcadmin
-    KC_BOOTSTRAP_ADMIN_PASSWORD: qwer
+      # Admin User
+      KC_BOOTSTRAP_ADMIN_USERNAME: kcadmin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: qwer
 
-    # Hostname & HTTPS
-    KC_HOSTNAME: https://keycloak.docuhub.me
-    KC_PROXY: edge
-    KC_HTTP_ENABLED: "false" # only HTTPS
+      # Hostname & HTTPS
+      KC_HOSTNAME: https://keycloak.docuhub.me
+      KC_PROXY: edge
+      KC_HTTP_ENABLED: "false"  # only HTTPS
+    ports:
+      - "8443:8443"  # Keycloak HTTPS port
+    volumes:
+      - ./keycloak/themes:/opt/keycloak/providers/
+      - ./keycloak/conf:/opt/keycloak/conf
+      - ./keycloak/data:/opt/keycloak/data
+      - ./keycloak/data/tmp:/opt/keycloak/data/tmp
+    networks:
+      - docuhub_morning_net
+    command: start
 
-  ports:
-    - "8443:8443" # container HTTPS port
-  volumes:
-    - ./keycloak/themes:/opt/keycloak/providers/
-    - ./keycloak/conf:/opt/keycloak/conf
-    - ./keycloak/data:/opt/keycloak/data
-    - ./keycloak/data/tmp:/opt/keycloak/data/tmp
-  networks:
-    - docuhub_morning_net
-  command:
-    - start
   minio-docuhub-morning:
     image: quay.io/minio/minio
     container_name: minio-docuhub-morning
@@ -52,8 +55,8 @@ services:
       MINIO_ROOT_PASSWORD: qwer1234
       MINIO_BROWSER_REDIRECT_URL: https://minio.docuhub.me/
     ports:
-      - "9000:9000" # S3 API
-      - "9001:9001" # Console UI
+      - "9000:9000"  # S3 API
+      - "9001:9001"  # Console UI
     volumes:
       - minio_morning_vol:/data
     networks:
