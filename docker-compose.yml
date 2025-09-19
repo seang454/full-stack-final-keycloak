@@ -32,7 +32,7 @@ services:
       # Hostname
       KC_HOSTNAME: keycloak.docuhub.me
       # KC_PROXY: passthrough for dev or testing
-      KC_HTTP_ENABLED: "true"
+      KC_HTTP_ENABLED: "false"
       KC_HOSTNAME_PORT: 9090
       KC_PROXY: edge
       KC_HOSTNAME_STRICT: "false" 
