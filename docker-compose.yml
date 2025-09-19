@@ -35,7 +35,7 @@ services:
       # Hostname & HTTPS
       KC_HOSTNAME: https://keycloak.docuhub.me
       KC_PROXY: edge
-      KC_HTTP_ENABLED: "false"  # only HTTPS
+      KC_HTTP_ENABLED: "true"  # only HTTPS
     ports:
       - "8443:8443"  # Keycloak HTTPS port
     volumes:
