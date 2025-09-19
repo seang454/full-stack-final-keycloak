@@ -38,12 +38,7 @@ jobs:
               git clone https://${{ secrets.PAT_TOKEN }}@github.com/seang454/full-stack-final-keycloak.git $HOME/docuhub-infra
               cd $HOME/docuhub-infra
             fi
-
-
-            # Ensure Keycloak data directory exists and has correct permissions
-            mkdir -p ./keycloak/data/tmp
-            sudo chown -R 1000:1000 ./keycloak/data
-            chmod -R 777 ./keycloak/data
+            
 
             # Find the docker-compose file
             DOCKER_COMPOSE_FILE=$(find $HOME/docuhub-infra -name "docker-compose.yml" | head -n 1)
