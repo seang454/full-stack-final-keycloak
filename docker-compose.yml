@@ -33,7 +33,7 @@ services:
       KC_BOOTSTRAP_ADMIN_PASSWORD: qwer
 
       # Hostname & Proxy (HTTP only, proxy handles HTTPS)
-      KC_HOSTNAME: http://keycloak.docuhub.me
+      KC_HOSTNAME: https://keycloak.docuhub.me
       KC_PROXY: edge
       KC_PROXY_HEADERS: "xforwarded"  # read X-Forwarded-* headers  reverse proxy
       KC_HTTP_ENABLED: "true"   # Keycloak runs in HTTP  
