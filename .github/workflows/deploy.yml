@@ -31,6 +31,16 @@ jobs:
             if [ -d "$HOME/docuhub-infra/.git" ]; then
               echo "📂 Repo exists, updating..."
               cd $HOME/docuhub-infra
+              
+              # Stop containers first to release directory locks
+              echo "🛑 Stopping existing containers..."
+              docker compose down --remove-orphans || true
+              
+              # Fix permissions on keycloak directories before git pull
+              echo "🔧 Fixing permissions..."
+              sudo chown -R $(whoami):$(whoami) keycloak/ 2>/dev/null || true
+              
+              # Now pull the latest changes
               git fetch origin
               git reset --hard origin/master
             else
@@ -38,7 +48,7 @@ jobs:
               git clone https://${{ secrets.PAT_TOKEN }}@github.com/seang454/full-stack-final-keycloak.git $HOME/docuhub-infra
               cd $HOME/docuhub-infra
             fi
-            
+
 
             # Find the docker-compose file
             DOCKER_COMPOSE_FILE=$(find $HOME/docuhub-infra -name "docker-compose.yml" | head -n 1)
@@ -55,7 +65,6 @@ jobs:
 
             # Deploy infra with Docker Compose
             echo "🐳 Deploying services..."
-            docker compose down --remove-orphans || true
             docker compose pull
             docker compose up -d
 
