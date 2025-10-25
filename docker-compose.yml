@@ -41,6 +41,11 @@ services:
       # Theme Configuration (disable caching for development)
       KC_SPI_THEME_CACHE_THEMES: "false"
       KC_SPI_THEME_CACHE_TEMPLATES: "false"
+      KC_SPI_THEME_STATIC_MAX_AGE: "-1"
+
+      # Development mode settings
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
     ports:
       - "9090:8080" # host port 9090 → container port 8080
     volumes:
@@ -51,7 +56,7 @@ services:
       - ./keycloak/themes:/opt/keycloak/themes
     networks:
       - docuhub_morning_net
-    command: start
+    command: start-dev --verbose
 
   minio-docuhub-morning:
     image: quay.io/minio/minio
