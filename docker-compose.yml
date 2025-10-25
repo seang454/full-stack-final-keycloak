@@ -35,10 +35,14 @@ services:
       # Hostname & Proxy (HTTP only, proxy handles HTTPS)
       KC_HOSTNAME: keycloak.docuhub.me
       KC_PROXY: edge
-      KC_PROXY_HEADERS: "xforwarded"  # read X-Forwarded-* headers  reverse proxy
-      KC_HTTP_ENABLED: "true"   # Keycloak runs in HTTP  
+      KC_PROXY_HEADERS: "xforwarded" # read X-Forwarded-* headers  reverse proxy
+      KC_HTTP_ENABLED: "true" # Keycloak runs in HTTP
+
+      # Theme Configuration (disable caching for development)
+      KC_SPI_THEME_CACHE_THEMES: "false"
+      KC_SPI_THEME_CACHE_TEMPLATES: "false"
     ports:
-      - "9090:8080"  # host port 9090 → container port 8080
+      - "9090:8080" # host port 9090 → container port 8080
     volumes:
       - ./keycloak/conf:/opt/keycloak/conf
       - ./keycloak/data:/opt/keycloak/data
@@ -57,14 +61,14 @@ services:
       MINIO_ROOT_PASSWORD: qwer1234
       MINIO_BROWSER_REDIRECT_URL: https://minio.docuhub.me/
     ports:
-      - "9000:9000"  # S3 API
-      - "9001:9001"  # Console UI
+      - "9000:9000" # S3 API
+      - "9001:9001" # Console UI
     volumes:
       - minio_morning_vol:/data
     networks:
       - docuhub_morning_net
     command: server /data --console-address ":9001"
-# build 
+# build
 volumes:
   postgres_morning_vol:
   minio_morning_vol:
